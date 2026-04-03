@@ -1,17 +1,13 @@
 def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
+def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
+    localPropertiesFile.withReader("UTF-8") { reader -> localProperties.load(reader) }
 }
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found.")
-}
-apply plugin: 'com.android.application'
+def flutterRoot = localProperties.getProperty("flutter.sdk")
+if (flutterRoot == null) { throw new GradleException("Flutter SDK not found.") }
+apply plugin: "com.android.application"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'kotlin-android'
+apply plugin: "kotlin-android"
 android {
     namespace "com.elsewhere.purefocus"
     compileSdkVersion 34
@@ -20,8 +16,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions { jvmTarget = '17' }
-    sourceSets { main.java.srcDirs += 'src/main/kotlin' }
+    kotlinOptions { jvmTarget = "17" }
+    sourceSets { main.java.srcDirs += "src/main/kotlin" }
     defaultConfig {
         applicationId "com.elsewhere.purefocus"
         minSdkVersion 23
@@ -38,7 +34,7 @@ android {
         }
     }
 }
-flutter { source '../..' }
+flutter { source "../.." }
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
 }
