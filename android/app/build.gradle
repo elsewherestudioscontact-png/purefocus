@@ -37,5 +37,4 @@ android {
 flutter { source "../.." }
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0"
-    implementation files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
