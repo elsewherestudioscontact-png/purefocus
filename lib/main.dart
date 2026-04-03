@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -162,20 +161,16 @@ class _PureFocusHomeState extends State<PureFocusHome>
 
   void _handleWakelock(bool enable) {
     try {
-      enable ? WakelockPlus.enable() : WakelockPlus.disable();
     } catch (e) {
-      debugPrint('PureFocus: wakelock error — $e');
     }
   }
 
   // Handlers registered BEFORE loadData — fixes race condition
   void _registerJsHandlers(InAppWebViewController ctrl) {
     ctrl.addJavaScriptHandler(
-      handlerName: 'wakelockEnable',
       callback: (_) => _handleWakelock(true),
     );
     ctrl.addJavaScriptHandler(
-      handlerName: 'wakelockDisable',
       callback: (_) => _handleWakelock(false),
     );
     ctrl.addJavaScriptHandler(
@@ -192,10 +187,8 @@ class _PureFocusHomeState extends State<PureFocusHome>
 (function() {
   function init() {
     window._pfWakelockEnable = function() {
-      try { window.flutter_inappwebview.callHandler('wakelockEnable'); } catch(e) {}
     };
     window._pfWakelockDisable = function() {
-      try { window.flutter_inappwebview.callHandler('wakelockDisable'); } catch(e) {}
     };
 
     var origStart = window.startTimer;
@@ -230,7 +223,6 @@ class _PureFocusHomeState extends State<PureFocusHome>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    WakelockPlus.disable();
     super.dispose();
   }
 
