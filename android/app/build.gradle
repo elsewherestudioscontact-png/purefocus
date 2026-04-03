@@ -10,8 +10,8 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found.")
 }
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'kotlin-android'
 android {
     namespace "com.elsewhere.purefocus"
     compileSdkVersion 34
