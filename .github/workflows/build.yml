@@ -29,9 +29,20 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Flutter precache
+        run: flutter precache --android
+
+      - name: Generate fresh Android folder via flutter create
+        run: |
+          flutter create --org com.elsewhere --project-name purefocus /tmp/fresh
+          rm -rf android
+          cp -r /tmp/fresh/android .
+          sed -i 's/com.elsewhere.purefocus/com.elsewhere.purefocus/g' android/app/build.gradle
+
       - name: Generate local.properties
         run: |
-          echo "flutter.sdk=$(which flutter | sed 's|/bin/flutter||')" > android/local.properties
+          FLUTTER_SDK=$(which flutter | sed 's|/bin/flutter||')
+          echo "flutter.sdk=$FLUTTER_SDK" > android/local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
 
       - name: Get dependencies
@@ -46,12 +57,3 @@ jobs:
           name: purefocus-release
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 30
-
-      - name: Create GitHub release on tag
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: build/app/outputs/flutter-apk/app-release.apk
-          name: PureFocus ${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
