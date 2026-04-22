@@ -86,10 +86,8 @@ class _PureFocusHomeState extends State<PureFocusHome> {
             );
           },
           onLoadStop: (ctrl, url) async {
-            final u = url?.toString() ?? '';
-            if (u == 'about:blank' || u.isEmpty) return;
-            await ctrl.evaluateJavascript(source: r'(function(){try{window.flutter_inappwebview.callHandler("appReady");}catch(e){}})();');
-          },
+  if (mounted) setState(() => _appReady = true);
+},
         ),
         AnimatedOpacity(
           opacity: _appReady ? 0.0 : 1.0,
